@@ -13,15 +13,25 @@ import com.example.giftcardsite.GetCard
 import com.example.giftcardsite.R
 import de.hdodenhof.circleimageview.CircleImageView
 
-class RecyclerViewAdapter(val context: Context, private val productList: List<Product?>?, private val user: User?) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+class RecyclerViewAdapter(
+    val context: Context,
+    private val productList: List<Product?>?,
+    private val user: User?
+) : RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder>() {
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun setData(product: Product?) {
-            val image : CircleImageView = itemView.findViewById(R.id.image_view)
-            val text : TextView = itemView.findViewById(R.id.name)
+            val image: CircleImageView = itemView.findViewById(R.id.image_view)
+            val text: TextView = itemView.findViewById(R.id.name)
+
             if (product != null) {
-                Glide.with(context).asBitmap().load("http://appsec.moyix.net/" + product.productImageLink).into(image)
+                Glide.with(context)
+                    .asBitmap()
+                    .load("https://appsec.moyix.net/" + product.productImageLink)
+                    .into(image)
             }
+
             if (product != null) {
                 text.text = product.productName
             }
@@ -30,7 +40,7 @@ class RecyclerViewAdapter(val context: Context, private val productList: List<Pr
                 if (product != null) {
                     val localProduct = product
                     val localUser = user
-                    val intent = Intent(context, GetCard::class.java).apply{
+                    val intent = Intent(context, GetCard::class.java).apply {
                         putExtra("User", localUser)
                         putExtra("Product", localProduct)
                     }
@@ -41,7 +51,6 @@ class RecyclerViewAdapter(val context: Context, private val productList: List<Pr
                 }
             }
         }
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -55,9 +64,9 @@ class RecyclerViewAdapter(val context: Context, private val productList: List<Pr
     }
 
     override fun getItemCount(): Int {
-        if (productList == null)
+        if (productList == null) {
             return 0
+        }
         return productList.size
     }
-
 }
